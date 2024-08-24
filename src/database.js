@@ -68,7 +68,7 @@ export async function initializeDatabase() {
 }
 
 // Fetch app usage for a given period
-export async function fetchAppUsage(period) {
+export async function fetchAppUsage(period, range = false) {
   const db = await initializeDatabase();
   let startDate, endDate;
 
@@ -78,11 +78,18 @@ export async function fetchAppUsage(period) {
     const specificDate = new Date(year, month - 1, day);
     startDate = specificDate.toISOString().split("T")[0];
     endDate = startDate; // For a specific day, startDate and endDate are the same
-  } else if (typeof period === "object" && period.startDate && period.endDate) {
-    // Handle custom date ranges
-    const { startDate: customStartDate, endDate: customEndDate } = period;
-    startDate = new Date(customStartDate).toISOString().split("T")[0];
-    endDate = new Date(customEndDate).toISOString().split("T")[0];
+  } else if (range) {
+    const [startDay, startMonth, startYear] = period.startDate
+      .split("/")
+      .map(Number);
+    const [endDay, endMonth, endYear] = period.endDate.split("/").map(Number);
+
+    startDate = new Date(startYear, startMonth - 1, startDay)
+      .toISOString()
+      .split("T")[0];
+    endDate = new Date(endYear, endMonth - 1, endDay)
+      .toISOString()
+      .split("T")[0];
   } else {
     // Use the date range function for predefined periods
     ({ startDate, endDate } = getDateRange(period));

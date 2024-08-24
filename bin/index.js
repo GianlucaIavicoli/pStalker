@@ -196,9 +196,11 @@ async function appUsageMenu() {
           "Show last month",
           "Show last year",
           "Show specific day",
+          "Show date range",
           "Help",
           "Back",
         ],
+        pageSize: 15,
       },
     ]);
 
@@ -262,7 +264,7 @@ async function appUsageMenu() {
             name: "specificDate",
             message: "Enter the date in the format (DD MM YYYY):",
             validate: (input) => {
-              const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input);
+              const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input.trim());
               return isValidDate
                 ? true
                 : "Please enter a valid date in the format DD MM YYYY. For example, 21 04 2024.";
@@ -283,6 +285,74 @@ async function appUsageMenu() {
 
         // Update and print the table
         defaultTable.table.title = `Apps usage report for: ${displayDate}`;
+        defaultTable.addRows(results);
+        console.clear();
+        console.log(SMALL_SEPARATOR);
+        defaultTable.printTable();
+        break;
+
+      case "Show date range":
+        const { startDate, endDate } = await inquirer.prompt([
+          {
+            type: "input",
+            name: "startDate",
+            message: "Enter the start date (DD MM YYYY):",
+            validate: (input) => {
+              const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input.trim());
+              return isValidDate
+                ? true
+                : "Please enter a valid date in the format DD MM YYYY. For example, 01 01 2024.";
+            },
+          },
+          {
+            type: "input",
+            name: "endDate",
+            message: "Enter the end date (DD MM YYYY):",
+            validate: (input) => {
+              const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input.trim());
+              return isValidDate
+                ? true
+                : "Please enter a valid date in the format DD MM YYYY. For example, 31 12 2024.";
+            },
+          },
+        ]);
+
+        // Convert the space-separated dates into Date objects
+        const [startDay, startMonth, startYear] = startDate
+          .split(" ")
+          .map(Number);
+        const [endDay, endMonth, endYear] = endDate.split(" ").map(Number);
+
+        const formattedStartDate = `${String(startDay).padStart(
+          2,
+          "0"
+        )}/${String(startMonth).padStart(2, "0")}/${startYear}`;
+        const formattedEndDate = `${String(endDay).padStart(2, "0")}/${String(
+          endMonth
+        ).padStart(2, "0")}/${endYear}`;
+
+        const displayStartDate = new Date(
+          startYear,
+          startMonth - 1,
+          startDay
+        ).toDateString();
+        const displayEndDate = new Date(
+          endYear,
+          endMonth - 1,
+          endDay
+        ).toDateString();
+
+        // Fetch the app usage data for the specified date range
+        results = await fetchAppUsage(
+          {
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          },
+          true
+        );
+
+        // Update and print the table
+        defaultTable.table.title = `Apps usage: \nFrom: ${displayStartDate} -> ${displayEndDate}`;
         defaultTable.addRows(results);
         console.clear();
         console.log(SMALL_SEPARATOR);
