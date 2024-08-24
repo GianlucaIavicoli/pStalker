@@ -195,6 +195,7 @@ async function appUsageMenu() {
           "Show last week",
           "Show last month",
           "Show last year",
+          "Show specific day",
           "Help",
           "Back",
         ],
@@ -249,6 +250,40 @@ async function appUsageMenu() {
         defaultTable.addRows(results);
 
         // Clear the console and print the table
+        console.clear();
+        console.log(SMALL_SEPARATOR);
+        defaultTable.printTable();
+        break;
+
+      case "Show specific day":
+        const { specificDate } = await inquirer.prompt([
+          {
+            type: "input",
+            name: "specificDate",
+            message: "Enter the date in the format (DD MM YYYY):",
+            validate: (input) => {
+              const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input);
+              return isValidDate
+                ? true
+                : "Please enter a valid date in the format DD MM YYYY. For example, 21 04 2024.";
+            },
+          },
+        ]);
+
+        // Convert the space-separated date into a Date object
+        const [day, month, year] = specificDate.split(" ").map(Number);
+        const formattedDate = `${String(day).padStart(2, "0")}/${String(
+          month
+        ).padStart(2, "0")}/${year}`;
+        const displayDate = new Date(year, month - 1, day).toDateString();
+
+
+        // Fetch the app usage data for the specific day
+        results = await fetchAppUsage(formattedDate);
+
+        // Update and print the table
+        defaultTable.table.title = `Apps usage report for: ${displayDate}`;
+        defaultTable.addRows(results);
         console.clear();
         console.log(SMALL_SEPARATOR);
         defaultTable.printTable();
