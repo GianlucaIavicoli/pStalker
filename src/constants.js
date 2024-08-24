@@ -5,7 +5,7 @@ import chalk from 'chalk';
 // App
 export const APP_NAME = 'pStalker';
 export const APP_DESCRIPTION =`pStalker is a CLI-only time tracking tool that monitors the time spent on desktop applications.`;
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.1.0';
 export const LOWERCASE_APP_NAME = APP_NAME.toLowerCase();
 
 
@@ -72,12 +72,14 @@ export const APP_USAGE_HELP = `${SEPARATOR}
 ${chalk.bold('README:')} The names of the apps are detected automatically, unfortunately they are not always user-friendly and can be cryptic.
 
 ${chalk.bold('Show apps usage options:')}
- ${chalk.cyan('Show today:')}        Show the apps usage for today.
- ${chalk.cyan('Show last week:')}    Show the apps usage for the last 7 days.
- ${chalk.cyan('Show last month:')}   Show the apps usage for the last 30 days.
- ${chalk.cyan('Show last year:')}    Show the apps usage for the last 365 days.
- ${chalk.cyan('Help:')}              Show this help menu.
- ${chalk.cyan('Back')}               Go back to the main menu.
+ ${chalk.cyan('Show today:')}         Show the apps usage for today.
+ ${chalk.cyan('Show last week:')}     Show the apps usage for the last 7 days.
+ ${chalk.cyan('Show last month:')}    Show the apps usage for the last 30 days.
+ ${chalk.cyan('Show last year:')}     Show the apps usage for the last 365 days.
+ ${chalk.cyan('Show specific day:')}  Show the apps usage for a specific day.
+ ${chalk.cyan('Show date range:')}    Show the apps usage for a specific date range.
+ ${chalk.cyan('Help:')}               Show this help menu.
+ ${chalk.cyan('Back')}                Go back to the main menu.
 
 Use the arrow keys to navigate the menu and press Enter to select an option.
 ${SEPARATOR}`;
