@@ -167,8 +167,7 @@ pStalker CLI
 - [ ] Add an option to set the idle time threshold in a new 'Settings' option menu
 - [ ] Add automated tests
 - [ ] Add support for Windows
-- [ ] Add support for macOS
-- [ ] Develop a GUI using Electron for viewing data on Linux, Windows, and macOS
+- [ ] Develop a GUI using Electron for viewing data on Linux and Windows
 
 See the [open issues](https://github.com/GianlucaIavicoli/pStalker/issues) for a full list of proposed features and known issues.
 
