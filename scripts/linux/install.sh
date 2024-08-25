@@ -169,7 +169,7 @@ if [ -z "$CURRENT_DESKTOP" ]; then
 fi
 
 # Check if the current desktop is GNOME
-if echo "$CURRENT_DESKTOP" | grep -q "^gnome$"; then
+if echo "$CURRENT_DESKTOP" | grep -q "gnome"; then
     echo -e "${GREEN}GNOME desktop environment detected.${NC}"
 
     # Check if the GNOME Shell extension is installed by querying D-Bus

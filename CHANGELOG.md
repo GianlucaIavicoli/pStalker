@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.5
+- Enhanced GNOME detection to support mixed desktop identifiers in XDG_CURRENT_DESKTOP such as 'ubuntu:gnome'
+
 ## v1.2.4
 - Improved the logic to detect the desktop environment in use
 - Added the logic to ensure the XDG_SESSION_TYPE is not set to tty
