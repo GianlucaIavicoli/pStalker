@@ -150,6 +150,12 @@ pStalker CLI
 │   │   └── Delete Apps Usage History
 │   │       └── Deletes usage history for one or more apps.
 │   │ 
+│   ├── Export Data
+│   │   ├── Export to CSV
+│   │   │   └── Exports usage data to a CSV file.
+│   │   └── Export to JSON
+│   │       └── Exports usage data to a JSON file.
+│   │ 
 │   ├── Help
 │   │   └── Displays the help menu for the current section.
 │   └── Exit
