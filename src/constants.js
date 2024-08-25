@@ -5,7 +5,7 @@ import chalk from 'chalk';
 // App
 export const APP_NAME = 'pStalker';
 export const APP_DESCRIPTION =`pStalker is a CLI-only time tracking tool that monitors the time spent on desktop applications.`;
-export const APP_VERSION = '1.2.5';
+export const APP_VERSION = '1.2.6';
 export const LOWERCASE_APP_NAME = APP_NAME.toLowerCase();
 
 
