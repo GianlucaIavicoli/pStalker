@@ -54,7 +54,7 @@ async function appsMenu() {
 
     if (notExcludedApps.length > 0) choices.push("Exclude apps");
     if (excludedApps.length > 0) choices.push("Include apps");
-    choices.push("Delete Apps Usage History", "Help", "Back");
+    choices.push("Delete apps usage history", "Help", "Back");
 
     const answers = await inquirer.prompt([
       {
@@ -151,7 +151,7 @@ async function appsMenu() {
         await sleepAndClear(DEFAULT_SLEEP_TIME);
         break;
 
-      case "Delete Apps Usage History":
+      case "Delete apps usage history":
         const usedApps = await getUsedApps();
         const deleteAnswers = await inquirer.prompt([
           {

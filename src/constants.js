@@ -92,7 +92,7 @@ ${chalk.bold('Apps management options:')}
  ${chalk.cyan('Show apps list:')}             Show the list of apps detected at least once.
  ${chalk.cyan('Include apps:')}               Include apps that were previously excluded.
  ${chalk.cyan('Exclude apps:')}               Exclude apps from tracking.
- ${chalk.cyan('Delete Apps Usage History:')}  Remove all the usage history of one or more apps.
+ ${chalk.cyan('Delete apps usage history:')}  Remove all the usage history of one or more apps.
  ${chalk.cyan('Help:')}                       Show this help menu.
  ${chalk.cyan('Back')}                        Go back to the main menu.
 
