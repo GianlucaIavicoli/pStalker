@@ -1,10 +1,5 @@
 <a id="readme-top"></a>
 
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Forks][forks-shield]][forks-url]
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -226,11 +221,4 @@ Special thanks to the resources and tools that helped make this project possible
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[forks-shield]: https://img.shields.io/github/forks/GianlucaIavicoli/pStalker.svg?style=for-the-badge
-[forks-url]: https://github.com/GianlucaIavicoli/pStalker/network/members
-[stars-shield]: https://img.shields.io/github/stars/GianlucaIavicoli/pStalker.svg?style=for-the-badge
-[stars-url]: https://github.com/GianlucaIavicoli/pStalker/stargazers
-[issues-shield]: https://img.shields.io/github/issues/GianlucaIavicoli/pStalker.svg?style=for-the-badge
-[issues-url]: https://github.com/GianlucaIavicoli/pStalker/issues
 [product-screenshot]: images/screenshot.png
