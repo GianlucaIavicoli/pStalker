@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.6
+- Update app usage menu to handle cases with no apps used yet
+
 ## v1.2.5
 - Enhanced GNOME detection to support mixed desktop identifiers in XDG_CURRENT_DESKTOP such as 'ubuntu:gnome'
 
