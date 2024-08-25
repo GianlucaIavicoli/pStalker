@@ -10,7 +10,7 @@
 <h3 align="center">pStalker</h3>
 
   <p align="center">
-pStalker is a CLI time-tracking tool for Linux, with future support planned for other OS. It tracks time spent on desktop apps from installation, continuing on each boot. Users can view usage reports for various timeframes (today, last 7 days, last month) and can exclude specific apps as needed.
+pStalker is a CLI time-tracking tool for Linux, with future support planned for other OS. It tracks time spent on desktop apps from installation, continuing on each boot. Users can view usage reports for various timeframes (today, last 7 days, last month), can exclude specific apps as needed and export the usage data to CSV and JSON.
     <br />
     <a href="https://github.com/GianlucaIavicoli/pStalker"><strong>Explore the docs »</strong></a>
     <br />
