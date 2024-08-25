@@ -5,7 +5,7 @@ import chalk from 'chalk';
 // App
 export const APP_NAME = 'pStalker';
 export const APP_DESCRIPTION =`pStalker is a CLI-only time tracking tool that monitors the time spent on desktop applications.`;
-export const APP_VERSION = '1.1.0';
+export const APP_VERSION = '1.2.0';
 export const LOWERCASE_APP_NAME = APP_NAME.toLowerCase();
 
 
@@ -89,11 +89,12 @@ export const APPS_MENU_HELP = `${SEPARATOR}
 ${chalk.bold('README:')} By default, all apps are included in the tracking list.
 
 ${chalk.bold('Apps management options:')}
- ${chalk.cyan('Show apps list:')}  Show the list of apps detected at least once.
- ${chalk.cyan('Include apps:')}    Include apps that were previously excluded.
- ${chalk.cyan('Exclude apps:')}    Exclude apps from tracking.
- ${chalk.cyan('Help:')}            Show this help menu.
- ${chalk.cyan('Back')}             Go back to the main menu.
+ ${chalk.cyan('Show apps list:')}             Show the list of apps detected at least once.
+ ${chalk.cyan('Include apps:')}               Include apps that were previously excluded.
+ ${chalk.cyan('Exclude apps:')}               Exclude apps from tracking.
+ ${chalk.cyan('Delete apps usage history:')}  Remove all the usage history of one or more apps.
+ ${chalk.cyan('Help:')}                       Show this help menu.
+ ${chalk.cyan('Back')}                        Go back to the main menu.
 
 Use the arrow keys to navigate the menu and press Enter to select an option.
 ${SEPARATOR}`;

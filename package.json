@@ -2,7 +2,7 @@
   "package-name": "pstalker",
   "name": "pstalker",
   "author": "Gianluca Iavicoli <info@gianlucaiavicoli.dev>",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "pStalker is a CLI-only time tracking tool that monitors the time spent on desktop applications.",
   "license": "MIT",
   "homepage": "https://github.com/GianlucaIavicoli/pStalker",

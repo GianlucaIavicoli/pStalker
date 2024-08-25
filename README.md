@@ -150,8 +150,10 @@ pStalker CLI
 │   │   │   └── Lists all apps detected at least once.
 │   │   ├── Include Apps
 │   │   │   └── Re-includes apps that were previously excluded.
-│   │   └── Exclude Apps
-│   │       └── Excludes apps from tracking.
+│   │   ├── Exclude Apps
+│   │   │   └── Excludes apps from tracking.
+│   │   └── Delete Apps Usage History
+│   │       └── Deletes usage history for one or more apps.
 │   │ 
 │   ├── Help
 │   │   └── Displays the help menu for the current section.
@@ -167,7 +169,7 @@ pStalker CLI
 
 - [x] Enable selecting a specific day for generating reports
 - [x] Enable selecting a date range for generating reports
-- [ ] Enable deleting all usage history for a specific app
+- [x] Enable deleting all usage history for a specific app
 - [ ] Allow exporting data to a CSV file
 - [ ] Allow exporting data to a JSON file
 - [ ] Add support for Windows
