@@ -203,6 +203,7 @@ async function appsMenu() {
 
         await sleepAndClear(DEFAULT_SLEEP_TIME);
         break;
+
       case "Help":
         console.clear();
         console.log(APPS_MENU_HELP);
@@ -224,20 +225,29 @@ async function appsMenu() {
 }
 
 async function appUsageMenu() {
+  var results;
+  var defaultTable = new Table({
+    columns: [
+      { name: "name", title: "App Name", alignment: "left", color: "cyan" },
+      {
+        name: "excluded",
+        title: "Excluded",
+        alignment: "left",
+        color: "red",
+      },
+      { name: "usage", title: "Usage", alignment: "left", color: "green" },
+    ],
+  });
+
   try {
-    var results;
-    var defaultTable = new Table({
-      columns: [
-        { name: "name", title: "App Name", alignment: "left", color: "cyan" },
-        {
-          name: "excluded",
-          title: "Excluded",
-          alignment: "left",
-          color: "red",
-        },
-        { name: "usage", title: "Usage", alignment: "left", color: "green" },
-      ],
-    });
+    const apps = await getUsedApps();
+
+    // If there are no apps, show a message and return to the main menu
+    if (apps.length === 0) {
+      console.log(chalk.blue("No apps used yet."));
+      await sleepAndClear(DEFAULT_SLEEP_TIME);
+      return;
+    }
 
     const answers = await inquirer.prompt([
       {
