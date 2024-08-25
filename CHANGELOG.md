@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.2
+- Added a small fix during the install/uninstall when checking if python is installed
+
 ## v1.2.1
 - Added a small fix during the install/uninstall process to support older versions of bash
 

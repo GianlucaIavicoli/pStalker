@@ -68,7 +68,7 @@ PYTHON_DEPENDENCY="dbus_idle" # Dependency required by the Python script to moni
 #### Checks and validations ####
 
 # Check if Python is installed
-if ! command -v python3 &> /dev/null; then
+if ! which python3 &> /dev/null && ! which python &> /dev/null; then
     echo -e "${RED}Error: Python is not installed.${NC}"
     cleanup_and_exit 1
 fi
@@ -227,7 +227,7 @@ DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS
     source "\$VENV_PATH/bin/activate"
     echo \$\$ > "\$PID_FILE"
     while true; do
-        python "\$PYTHON_SCRIPT" "\$THRESHOLD" "\$UPDATER_SCRIPT" "\$IS_WAYLAND_AND_GNOME" "\$DBUS_SESSION_BUS_ADDRESS"
+        python3 "\$PYTHON_SCRIPT" "\$THRESHOLD" "\$UPDATER_SCRIPT" "\$IS_WAYLAND_AND_GNOME" "\$DBUS_SESSION_BUS_ADDRESS"
         sleep 1
     done
 } > "\$LOGS_FILE_PATH" 2>&1 &
