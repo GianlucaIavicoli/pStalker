@@ -112,3 +112,20 @@ export async function sleepAndClear(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
   console.clear();
 }
+
+
+export function setuDirectory() {
+  const userHomeDir = os.homedir();
+  const appExportDir = path.join(userHomeDir, APP_NAME, "exports");
+  const appBackupDir = path.join(userHomeDir, APP_NAME, "backups");
+
+  // Create export directory if it doesn't exist
+  if (!fs.existsSync(appExportDir)) {
+    fs.mkdirSync(appExportDir, { recursive: true });
+  }
+
+  // Create backup directory if it doesn't exist
+  if (!fs.existsSync(appBackupDir)) {
+    fs.mkdirSync(appBackupDir, { recursive: true });
+  }
+}

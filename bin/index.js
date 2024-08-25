@@ -5,6 +5,8 @@ import {
   sleepAndClear,
   enableTracking,
   disableTracking,
+  exportData,
+  setuDirectory,
 } from "../src/utils.js";
 import {
   DEFAULT_SLEEP_TIME,
@@ -502,6 +504,9 @@ async function mainMenu() {
       process.exit(0);
     }
   }
+
+  // Constantly check if the pStalker directories are set up
+  setuDirectory();
 
   // Re-run the main menu after each action
   mainMenu();
