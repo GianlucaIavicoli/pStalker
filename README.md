@@ -168,13 +168,12 @@ pStalker CLI
 - [x] Enable selecting a specific day for generating reports
 - [x] Enable selecting a date range for generating reports
 - [ ] Enable deleting all usage history for a specific app
-- [ ] Enable importing and exporting database backups
 - [ ] Allow exporting data to a CSV file
 - [ ] Allow exporting data to a JSON file
-- [ ] Add an option to set the idle time threshold in a new 'Settings' option menu
-- [ ] Add automated tests
 - [ ] Add support for Windows
+- [ ] Add automated tests
 - [ ] Develop a GUI using Electron for viewing data on Linux and Windows
+- [ ] Enable importing and exporting database backups
 
 See the [open issues](https://github.com/GianlucaIavicoli/pStalker/issues) for a full list of proposed features and known issues.
 
