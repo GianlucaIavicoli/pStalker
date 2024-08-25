@@ -130,6 +130,7 @@ pStalker CLI
 │   │   └── Enables tracking both now and on boot. Re-runs the installer script; may require sudo.
 │   ├── Disable Tracking
 │   │   └── Disables tracking both now and on boot. Removes tool-related files; database remains unchanged; may require sudo.
+│   │ 
 │   ├── Show Apps Usage
 │   │   ├── Show Today
 │   │   │   └── Displays usage data for today.
@@ -137,8 +138,13 @@ pStalker CLI
 │   │   │   └── Displays usage data for the last 7 days.
 │   │   ├── Show Last Month
 │   │   │   └── Displays usage data for the last 30 days.
-│   │   └── Show Last Year
-│   │       └── Displays usage data for the last 365 days.
+│   │   ├── Show Last Year
+│   │   │   └── Displays usage data for the last 365 days.
+│   │   ├── Show Specific Date
+│   │   │   └── Displays usage data for a specific day.
+│   │   └── Show Date Range
+│   │       └── Displays usage data for a specific date range.
+│   │ 
 │   ├── Manage Apps
 │   │   ├── Show Apps List
 │   │   │   └── Lists all apps detected at least once.
@@ -146,6 +152,7 @@ pStalker CLI
 │   │   │   └── Re-includes apps that were previously excluded.
 │   │   └── Exclude Apps
 │   │       └── Excludes apps from tracking.
+│   │ 
 │   ├── Help
 │   │   └── Displays the help menu for the current section.
 │   └── Exit
