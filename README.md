@@ -150,8 +150,10 @@ pStalker CLI
 │   │   │   └── Lists all apps detected at least once.
 │   │   ├── Include Apps
 │   │   │   └── Re-includes apps that were previously excluded.
-│   │   └── Exclude Apps
-│   │       └── Excludes apps from tracking.
+│   │   ├── Exclude Apps
+│   │   │   └── Excludes apps from tracking.
+│   │   └── Delete Apps Usage History
+│   │       └── Deletes usage history for one or more apps.
 │   │ 
 │   ├── Help
 │   │   └── Displays the help menu for the current section.
