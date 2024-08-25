@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.3
+- Added a small fix during the install/uninstall when checking if python3 is installed
+
 ## v1.2.2
 - Added a small fix during the install/uninstall when checking if python is installed
 

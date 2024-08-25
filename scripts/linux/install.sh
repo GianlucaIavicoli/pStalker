@@ -67,8 +67,8 @@ PYTHON_DEPENDENCY="dbus_idle" # Dependency required by the Python script to moni
 
 #### Checks and validations ####
 
-# Check if Python is installed
-if ! which python3 &> /dev/null && ! which python &> /dev/null; then
+# Check if Python3 is installed
+if ! which python3 &> /dev/null; then
     echo -e "${RED}Error: Python is not installed.${NC}"
     cleanup_and_exit 1
 fi
