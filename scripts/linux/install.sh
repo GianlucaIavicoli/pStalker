@@ -153,13 +153,24 @@ if [ -f "$AUTOSTART_SCRIPT_PATH" ]; then
     rm "$AUTOSTART_SCRIPT_PATH"
 fi
 
+# Check if the XDG_SESSION_TYPE is set to tty
+if [ "$XDG_SESSION_TYPE" = "tty" ]; then
+    echo -e "${RED}Error: XDG_SESSION_TYPE is set to tty. Unable to detect the desktop environment.${NC}"
+    cleanup_and_exit 1
+fi
 
-# Get the session type and convert it to lowercase
-SESSION_TYPE=$(echo "$XDG_SESSION_TYPE" | tr '[:upper:]' '[:lower:]')
+# Get the current desktop environment and convert it to lowercase
+CURRENT_DESKTOP=$(echo "$XDG_CURRENT_DESKTOP" | tr '[:upper:]' '[:lower:]')
 
-# Check if the session type is Wayland and GNOME Shell is running
-if [ "$SESSION_TYPE" = "wayland" ] && pgrep -x "gnome-shell" > /dev/null; then
-    echo -e "${GREEN}Wayland session with GNOME Shell detected.${NC}"
+# Check if the XDG_CURRENT_DESKTOP variable is empty or null
+if [ -z "$CURRENT_DESKTOP" ]; then
+    echo -e "${RED}Error: XDG_CURRENT_DESKTOP is empty or null. Unable to detect the desktop environment.${NC}"
+    cleanup_and_exit 1
+fi
+
+# Check if the current desktop is GNOME
+if echo "$CURRENT_DESKTOP" | grep -q "^gnome$"; then
+    echo -e "${GREEN}GNOME desktop environment detected.${NC}"
 
     # Check if the GNOME Shell extension is installed by querying D-Bus
     if gdbus introspect --session --dest org.gnome.Shell --object-path /org/gnome/Shell/Extensions/WindowsExt &> /dev/null; then
@@ -167,7 +178,7 @@ if [ "$SESSION_TYPE" = "wayland" ] && pgrep -x "gnome-shell" > /dev/null; then
         introspect_output=$(gdbus introspect --session --dest org.gnome.Shell --object-path /org/gnome/Shell/Extensions/WindowsExt)
         if echo "$introspect_output" | grep -q "interface org.freedesktop.DBus.Properties"; then
             echo -e "${GREEN}GNOME extension 'Window Calls Extended' is installed.${NC}"
-            IS_WAYLAND_AND_GNOME=1
+            IS_GNOME=1
         else
             echo -e "${RED}Error: GNOME extension 'Window Calls Extended' is not installed. You can install the extension from https://extensions.gnome.org/extension/4974/window-calls-extended/${NC}"
             cleanup_and_exit 1
@@ -177,9 +188,11 @@ if [ "$SESSION_TYPE" = "wayland" ] && pgrep -x "gnome-shell" > /dev/null; then
         cleanup_and_exit 1
     fi
 else
-    echo -e "${YELLOW}Warning: XDG_SESSION_TYPE is not Wayland or GNOME Shell is not running. Assuming X11 environment.${NC}"
-    IS_WAYLAND_AND_GNOME=0
+    echo -e "${YELLOW}Warning: XDG_CURRENT_DESKTOP does not contain 'GNOME'. Assuming a non-GNOME environment.${NC}"
+    IS_GNOME=0
 fi
+
+
 
 echo -e "${GREEN}All checks and validations passed.${NC}"
 sleep 2

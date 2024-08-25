@@ -71,12 +71,12 @@ pStalker is a CLI time-tracking tool for Linux, with future support planned for 
 | Operating System       | Support Level                |
 | ---------------------- | ------------------------------ |
 | Linux (X11)            | Full Support ✅                |
-| Linux (GNOME/Wayland)  | Requires Extension ✅         |
+| Linux (GNOME)  | Requires Extension ✅         |
 | Windows                | Not Yet Supported ❌          |
 | macOS                  | Not Yet Supported ❌          |
 
 **Tested Distributions:**
-- **Manjaro GNOME/Wayland**: Tested and supported. ✅
+- **Manjaro GNOME Wayland**: Tested and supported. ✅
 - **Ubuntu 22 GNOME X11**: Tested and supported. ✅
 
 
@@ -95,7 +95,7 @@ Ensure that you have the following installed on your system:
 ### Installation
 
 > **⚠️ Warning for Linux Users:**
-> - **GNOME/Wayland Users:** You **must** install the [Window Calls Extended](https://extensions.gnome.org/extension/4974/window-calls-extended/) extension for pStalker to function properly.
+> - **GNOME Users:** You **must** install the [Window Calls Extended](https://extensions.gnome.org/extension/4974/window-calls-extended/) extension for pStalker to function properly.
 > - **Autostart Configuration:** Ensure your Linux distribution uses the `~/.config/autostart/` directory to run scripts on login; otherwise, pStalker won't work.
 > - **Privileges:** You might need to use `sudo` to install pStalker.
 
