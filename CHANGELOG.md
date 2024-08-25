@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.1
+- Added a small fix during the install/uninstall process to support older versions of bash
+
 ## v1.2.0
 - Added the option to delete all the usage history for one or more apps. 
 

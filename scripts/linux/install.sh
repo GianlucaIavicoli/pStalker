@@ -58,9 +58,10 @@ sleep 2
 
 
 # Define paths and variables
-EXEC_SCRIPT_NAME="${APP_NAME,,}.sh"
+LOWERCASE_APP_NAME="$(echo "${APP_NAME}" | tr '[:upper:]' '[:lower:]')"
+EXEC_SCRIPT_NAME="$LOWERCASE_APP_NAME.sh"
 EXEC_SCRIPT_PATH="$PROJECT_ROOT/bin"
-AUTOSTART_SCRIPT_PATH="$HOME/.config/autostart/${APP_NAME,,}.desktop"
+AUTOSTART_SCRIPT_PATH="$HOME/.config/autostart/$LOWERCASE_APP_NAME.desktop"
 VENV_PATH="$PROJECT_ROOT/.venv"
 PYTHON_DEPENDENCY="dbus_idle" # Dependency required by the Python script to monitor idle time
 
@@ -110,20 +111,20 @@ fi
 
 # Check if the logs file already exists and remove it 
 if [ -f "$LOGS_FILE_PATH" ]; then
-    echo -e "${YELLOW}Warning: The log file for ${APP_NAME,,}  already exists. Removing it...${NC}"
+    echo -e "${YELLOW}Warning: The log file for $LOWERCASE_APP_NAME  already exists. Removing it...${NC}"
     sudo rm "$LOGS_FILE_PATH"
 fi
 
 # Check if the pid file already exists and remove it
-if [ -f "/var/run/${APP_NAME,,}_pid.pid" ]; then
-    echo -e "${YELLOW}Warning: The PID file for ${APP_NAME,,} already exists. Removing it...${NC}"
-    sudo rm "/var/run/${APP_NAME,,}_pid.pid"
+if [ -f "/var/run/${LOWERCASE_APP_NAME}_pid.pid" ]; then
+    echo -e "${YELLOW}Warning: The PID file for $LOWERCASE_APP_NAME already exists. Removing it...${NC}"
+    sudo rm "/var/run/${LOWERCASE_APP_NAME}_pid.pid"
 fi
 
 # Check if the process is already running and kill it
-if pgrep -f "${APP_NAME,,}.sh" > /dev/null; then
+if pgrep -f "$EXEC_SCRIPT_NAME" > /dev/null; then
     echo -e "${YELLOW}Warning: The script for $APP_NAME is already running. Killing it...${NC}"
-    sudo pkill -f "${APP_NAME,,}.sh"
+    sudo pkill -f "$EXEC_SCRIPT_NAME"
 fi
 
 # Check if DBUS_SESSION_BUS_ADDRESS is set
@@ -216,7 +217,7 @@ THRESHOLD=$THRESHOLD
 IS_WAYLAND_AND_GNOME=$IS_WAYLAND_AND_GNOME
 
 # Path to the PID file so we can kill the script later
-PID_FILE=/var/run/${APP_NAME,,}_pid.pid
+PID_FILE=/var/run/${LOWERCASE_APP_NAME}_pid.pid
 
 # DBUS_SESSION_BUS_ADDRESS for D-Bus communication
 DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS
@@ -266,7 +267,7 @@ echo -e "${GREEN}Installation of ${APP_NAME} is complete.${NC}"
 sh "$EXEC_SCRIPT_PATH"/$EXEC_SCRIPT_NAME
 
 # Check if the script is running
-if pgrep -f "${APP_NAME,,}.sh" > /dev/null; then
+if pgrep -f "$EXEC_SCRIPT_NAME" > /dev/null; then
     continue
 else
     echo -e "${RED}Error: Could't start the process for $APP_NAME.${NC}"

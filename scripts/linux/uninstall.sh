@@ -8,9 +8,10 @@ NC='\033[0m' # No Color
 
 APP_NAME=$1
 PROJECT_ROOT=$2
-SCRIPT_NAME="${APP_NAME,,}.sh"
-AUTOSTART_PATH="$HOME/.config/autostart/${APP_NAME,,}.desktop"
-LOGS_FILE_PATH="/var/log/${APP_NAME,,}.log"
+LOWERCASE_APP_NAME="$(echo "${APP_NAME}" | tr '[:upper:]' '[:lower:]')"
+SCRIPT_NAME="${LOWERCASE_APP_NAME}.sh"
+AUTOSTART_PATH="$HOME/.config/autostart/${LOWERCASE_APP_NAME}.desktop"
+LOGS_FILE_PATH="/var/log/${LOWERCASE_APP_NAME}.log"
 
 # Check if the correct number of arguments are provided
 if [ "$#" -ne 2 ]; then
