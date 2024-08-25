@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.6
+- Added the options to export the usage history to a CSV or JSON file
+
 ## v1.2.6
 - Update app usage menu to handle cases with no apps used yet
 
