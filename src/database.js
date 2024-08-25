@@ -72,6 +72,7 @@ export async function fetchAppUsage(period, range = false) {
   const db = await initializeDatabase();
   let startDate, endDate;
 
+  // TODO: Find a better way to handle this
   if (/^\d{2}\/\d{2}\/\d{4}$/.test(period)) {
     // Handle specific day
     const [day, month, year] = period.split("/").map(Number);
@@ -237,6 +238,38 @@ export async function markAppsAsExcludedOrIncluded(appIds, exclude) {
     await db.close();
   } catch (error) {
     console.error("Error updating app exclusion status:", error);
+  }
+}
+
+// Function to get the list of apps that have been used
+export async function getUsedApps() {
+  const db = await initializeDatabase();
+  try {
+    const apps = await db.all(`
+            SELECT DISTINCT apps.id, apps.app_name
+            FROM apps as apps
+            JOIN app_usage ON apps.id = app_usage.app_id
+            WHERE app_usage.duration >= 1
+        `);
+    await db.close();
+    return apps;
+  } catch (error) {
+    console.error("Error retrieving used apps:", error);
+  }
+}
+
+// Function to delete the apps usage history
+export async function deleteAppUsageHistory(apps) {
+  const db = await initializeDatabase();
+  try {
+    const placeholders = apps.map(() => "?").join(",");
+    const query = `DELETE FROM app_usage WHERE app_id IN (${placeholders})`;
+    await db.run(query, apps);
+    await db.close();
+    return true;
+  } catch (error) {
+    console.error("Error deleting app usage history:", error);
+    return false;
   }
 }
 

@@ -18,6 +18,8 @@ import {
   markAppsAsExcludedOrIncluded,
   isTrackingEnabled,
   fetchAppUsage,
+  deleteAppUsageHistory,
+  getUsedApps,
 } from "../src/database.js";
 import { Table } from "console-table-printer";
 
@@ -52,7 +54,7 @@ async function appsMenu() {
 
     if (notExcludedApps.length > 0) choices.push("Exclude apps");
     if (excludedApps.length > 0) choices.push("Include apps");
-    choices.push("Help", "Back");
+    choices.push("Delete Apps Usage History", "Help", "Back");
 
     const answers = await inquirer.prompt([
       {
@@ -149,6 +151,58 @@ async function appsMenu() {
         await sleepAndClear(DEFAULT_SLEEP_TIME);
         break;
 
+      case "Delete Apps Usage History":
+        const usedApps = await getUsedApps();
+        const deleteAnswers = await inquirer.prompt([
+          {
+            type: "checkbox",
+            name: "appsToDelete",
+            message: "Select apps to delete all usage history:",
+            choices: usedApps.map((app) => ({
+              name: app.app_name,
+              value: app.id,
+            })),
+            loop: false,
+            pageSize: 15,
+            theme: {
+              helpMode: "always",
+            },
+          },
+        ]);
+
+        if (deleteAnswers.appsToDelete.length > 0) {
+          // Confirm deletion
+          const { confirmDelete } = await inquirer.prompt([
+            {
+              type: "confirm",
+              name: "confirmDelete",
+              message: `Are you sure you want to delete all usage history for the selected apps? This action cannot be undone.`,
+              default: false,
+            },
+          ]);
+
+          if (confirmDelete) {
+            const success = await deleteAppUsageHistory(
+              deleteAnswers.appsToDelete
+            );
+            if (success) {
+              console.log(
+                chalk.green(
+                  "All usage history for the selected apps has been deleted."
+                )
+              );
+            } else {
+              console.log(chalk.red("Failed to delete usage history."));
+            }
+          } else {
+            console.log(chalk.green("Operation cancelled."));
+          }
+        } else {
+          console.log(chalk.blue("No apps selected for deletion."));
+        }
+
+        await sleepAndClear(DEFAULT_SLEEP_TIME);
+        break;
       case "Help":
         console.clear();
         console.log(APPS_MENU_HELP);
@@ -278,7 +332,6 @@ async function appUsageMenu() {
           month
         ).padStart(2, "0")}/${year}`;
         const displayDate = new Date(year, month - 1, day).toDateString();
-
 
         // Fetch the app usage data for the specific day
         results = await fetchAppUsage(formattedDate);
