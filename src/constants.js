@@ -20,7 +20,7 @@ export const UPDATER_PATH = path.join(ROOT_DIR, 'src', 'updater.js');
 
 // General Utils
 export const IDLE_THRESHOLD = 300;
-export const DEFAULT_SLEEP_TIME = 5000;
+export const DEFAULT_SLEEP_TIME = 2000;
 
 
 // Utils Linux

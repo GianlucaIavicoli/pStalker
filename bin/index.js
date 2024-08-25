@@ -407,12 +407,12 @@ async function mainMenu() {
     switch (answers.action) {
       case "Enable tracking":
         await enableTracking();
-        await sleepAndClear(DEFAULT_SLEEP_TIME);
+        await sleepAndClear(5000);
         break;
 
       case "Disable tracking":
         await disableTracking();
-        await sleepAndClear(DEFAULT_SLEEP_TIME);
+        await sleepAndClear(5000);
         break;
 
       case "Show apps usage":
