@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.4
+- Fixed the issue with the installation process that was causing the script to fail when checking if python3 is installed even if it was installed
+- Added the check for the 'pip3' command to be installed before installing the required packages
+- Revert the changes made in v1.2.3 and v1.2.2
+
 ## v1.2.3
 - Added a small fix during the install/uninstall when checking if python3 is installed
 

@@ -68,8 +68,16 @@ PYTHON_DEPENDENCY="dbus_idle" # Dependency required by the Python script to moni
 #### Checks and validations ####
 
 # Check if Python3 is installed
-if ! which python3 &> /dev/null; then
-    echo -e "${RED}Error: Python is not installed.${NC}"
+if ! command -v python3 2>&1 /dev/null; then
+    echo -e "${RED}Error: Python3 is not installed.${NC}"
+    echo -e "${YELLOW}Please make sure that Python3 is installed and added to the system's PATH.${NC}"
+    cleanup_and_exit 1
+fi
+
+# Check if pip3 is installed
+if ! command -v pip3 2>&1 /dev/null; then
+    echo -e "${RED}Error: pip3 is not installed.${NC}"
+    echo -e "${YELLOW}Please make sure that pip3 is installed and added to the system's PATH.${NC}"
     cleanup_and_exit 1
 fi
 
@@ -183,10 +191,12 @@ echo -e "${GREEN}Creating new python virtual environment in $VENV_PATH...${NC}"
 python3 -m venv "$VENV_PATH"
 sleep 2
 
+echo "$VENV_PATH/bin/activate"
 # Source the virtual environment and install the required dependency
-source "$VENV_PATH/bin/activate"
+. "$VENV_PATH/bin/activate"
 echo -e "${GREEN}Installing Python dependency...${NC}"
 sleep 2
+
 pip install --upgrade pip
 pip install "$PYTHON_DEPENDENCY"
 
@@ -195,8 +205,6 @@ pip install "$PYTHON_DEPENDENCY"
 # Create the exec script file and write the content
 cat <<EOL > "$EXEC_SCRIPT_NAME"
 #!/bin/bash
-
-date >> /home/kalix/notes.txt
 
 # Path to the Python virtual environment
 VENV_PATH=$VENV_PATH
