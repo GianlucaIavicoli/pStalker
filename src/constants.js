@@ -61,6 +61,7 @@ ${chalk.bold('Main menu options:')}
  ${chalk.cyan(`${trackingStatus ? 'Disable tracking:' : 'Enable tracking: '}`)}   ${trackingStatus ? 'Disable the tracking process both now and on boot.\n                     This will also remove any files created by the tool to make it work properly.\n                     (Note: The database will not be deleted or modified in any way. Sudo may be required.)' : 'Enable the tracking process both now and on boot.\n                     This will re-run again the installer script to ensure the tool is properly set up.\n                     (Note: If the database already exists, it will not be modified. Sudo may be required.)'}
  ${chalk.cyan('Show apps usage:')}    Display options to show the report of app usage.
  ${chalk.cyan('Manage apps:')}        Manage the list of apps to track.
+ ${chalk.cyan('Export data:')}        Display options to export the data. Available formats: CSV, JSON.
  ${chalk.cyan('Help:')}               Show this help menu.
  ${chalk.cyan('Exit:')}               Exit the tool.
 
@@ -95,6 +96,18 @@ ${chalk.bold('Apps management options:')}
  ${chalk.cyan('Delete apps usage history:')}  Remove all the usage history of one or more apps.
  ${chalk.cyan('Help:')}                       Show this help menu.
  ${chalk.cyan('Back')}                        Go back to the main menu.
+
+Use the arrow keys to navigate the menu and press Enter to select an option.
+${SEPARATOR}`;
+
+export const EXPORT_MENU_HELP = `${SEPARATOR}
+${chalk.bold('README:')} The data will be exported in the pStalker folder in your home directory.
+
+${chalk.bold('Export data options:')}
+ ${chalk.cyan('Export to CSV:')}    Export the data to a CSV file.
+ ${chalk.cyan('Export to JSON:')}   Export the data to a JSON file.
+ ${chalk.cyan('Help:')}             Show this help menu.
+ ${chalk.cyan('Back')}              Go back to the main menu.
 
 Use the arrow keys to navigate the menu and press Enter to select an option.
 ${SEPARATOR}`;

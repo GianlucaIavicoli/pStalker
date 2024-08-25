@@ -7,6 +7,7 @@ import {
   disableTracking,
   exportData,
   setuDirectory,
+  getAppUsage,
 } from "../src/utils.js";
 import {
   DEFAULT_SLEEP_TIME,
@@ -14,12 +15,12 @@ import {
   APP_USAGE_HELP,
   APPS_MENU_HELP,
   SMALL_SEPARATOR,
+  EXPORT_MENU_HELP,
 } from "../src/constants.js";
 import {
   getApps,
   markAppsAsExcludedOrIncluded,
   isTrackingEnabled,
-  fetchAppUsage,
   deleteAppUsageHistory,
   getUsedApps,
 } from "../src/database.js";
@@ -272,7 +273,7 @@ async function appUsageMenu() {
 
     switch (answers.reportOption) {
       case "Show today":
-        results = await fetchAppUsage("1d");
+        results = await getAppUsage("1d", false, true);
 
         // Update the table title and add the rows
         defaultTable.table.title = "Apps usage report for today";
@@ -285,7 +286,7 @@ async function appUsageMenu() {
         break;
 
       case "Show last week":
-        results = await fetchAppUsage("1w");
+        results = await getAppUsage("1w", false, true);
 
         // Update the table title and add the rows
         defaultTable.table.title = "Apps usage report for the last week";
@@ -298,7 +299,7 @@ async function appUsageMenu() {
         break;
 
       case "Show last month":
-        results = await fetchAppUsage("1m");
+        results = await getAppUsage("1m", false, true);
 
         // Update the table title and add the rows
         defaultTable.table.title = "Apps usage report for the last month";
@@ -311,7 +312,7 @@ async function appUsageMenu() {
         break;
 
       case "Show last year":
-        results = await fetchAppUsage("1y");
+        results = await getAppUsage("1y", false, true);
 
         // Update the table title and add the rows
         defaultTable.table.title = "Apps usage report for the last year";
@@ -346,8 +347,8 @@ async function appUsageMenu() {
         const displayDate = new Date(year, month - 1, day).toDateString();
 
         // Fetch the app usage data for the specific day
-        results = await fetchAppUsage(formattedDate);
-
+        results = await getAppUsage(formattedDate, false, true);
+        
         // Update and print the table
         defaultTable.table.title = `Apps usage report for: ${displayDate}`;
         defaultTable.addRows(results);
@@ -408,11 +409,12 @@ async function appUsageMenu() {
         ).toDateString();
 
         // Fetch the app usage data for the specified date range
-        results = await fetchAppUsage(
+        results = await getAppUsage(
           {
             startDate: formattedStartDate,
             endDate: formattedEndDate,
           },
+          true,
           true
         );
 
@@ -444,6 +446,166 @@ async function appUsageMenu() {
   }
 }
 
+async function exportMenu() {
+  const apps = await getUsedApps();
+
+  // If there are no apps, show a message and return to the main menu
+  if (apps.length === 0) {
+    console.log(chalk.blue("No apps used yet."));
+    await sleepAndClear(DEFAULT_SLEEP_TIME);
+    return;
+  }
+
+  const { exportFormat } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "exportFormat",
+      message: "Choose the export format:",
+      choices: ["Export to CSV", "Export to JSON", "Help", "Back"],
+    },
+  ]);
+
+  switch (exportFormat) {
+    case "Export to CSV":
+      await chooseExportPeriods("csv");
+      break;
+
+    case "Export to JSON":
+      await chooseExportPeriods("json");
+      break;
+
+    case "Help":
+      console.clear();
+      console.log(EXPORT_MENU_HELP);
+      break;
+
+    case "Back":
+      console.clear();
+      return;
+  }
+
+  await exportMenu();
+}
+
+async function chooseExportPeriods(format) {
+  const { usageOption } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "usageOption",
+      message: "Select the usage period:",
+      choices: [
+        "Usage today",
+        "Usage last week",
+        "Usage last month",
+        "Usage last year",
+        "Usage specific day",
+        "Usage date range",
+        "Back",
+      ],
+      pageSize: 15,
+    },
+  ]);
+
+  let results;
+  switch (usageOption) {
+    case "Usage today":
+      results = await getAppUsage("1d", false, false);
+      break;
+    case "Usage last week":
+      results = await getAppUsage("1w", false, false);
+      break;
+    case "Usage last month":
+      results = await getAppUsage("1m", false, false);
+      break;
+    case "Usage last year":
+      results = await getAppUsage("1y", false, false);
+      break;
+
+    case "Usage specific day":
+      const { specificDate } = await inquirer.prompt([
+        {
+          type: "input",
+          name: "specificDate",
+          message: "Enter the date in the format (DD MM YYYY):",
+          validate: (input) => {
+            const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input.trim());
+            return isValidDate
+              ? true
+              : "Please enter a valid date in the format DD MM YYYY. For example, 21 04 2024.";
+          },
+        },
+      ]);
+
+      const [day, month, year] = specificDate.split(" ").map(Number);
+      const formattedDate = `${String(day).padStart(2, "0")}/${String(
+        month
+      ).padStart(2, "0")}/${year}`;
+
+      results = await getAppUsage(formattedDate, false, false);
+      break;
+
+    case "Usage date range":
+      const { startDate, endDate } = await inquirer.prompt([
+        {
+          type: "input",
+          name: "startDate",
+          message: "Enter the start date (DD MM YYYY):",
+          validate: (input) => {
+            const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input.trim());
+            return isValidDate
+              ? true
+              : "Please enter a valid date in the format DD MM YYYY. For example, 01 01 2024.";
+          },
+        },
+        {
+          type: "input",
+          name: "endDate",
+          message: "Enter the end date (DD MM YYYY):",
+          validate: (input) => {
+            const isValidDate = /^\d{2} \d{2} \d{4}$/.test(input.trim());
+            return isValidDate
+              ? true
+              : "Please enter a valid date in the format DD MM YYYY. For example, 31 12 2024.";
+          },
+        },
+      ]);
+
+      const [startDay, startMonth, startYear] = startDate
+        .split(" ")
+        .map(Number);
+      const [endDay, endMonth, endYear] = endDate.split(" ").map(Number);
+
+      const formattedStartDate = `${String(startDay).padStart(2, "0")}/${String(
+        startMonth
+      ).padStart(2, "0")}/${startYear}`;
+      const formattedEndDate = `${String(endDay).padStart(2, "0")}/${String(
+        endMonth
+      ).padStart(2, "0")}/${endYear}`;
+
+      results = await getAppUsage(
+        {
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        },
+        true,
+        false
+      );
+      break;
+
+    case "Back":
+      return;
+  }
+
+  if (!results || results.length === 0) {
+    console.log(chalk.red("No data found for the selected period."));
+    return;
+  }
+
+  // Export the data
+  exportData(format, results);
+  await sleepAndClear(DEFAULT_SLEEP_TIME);
+}
+
 async function mainMenu() {
   try {
     const trackingEnabled = await isTrackingEnabled();
@@ -455,7 +617,13 @@ async function mainMenu() {
     else choices.push("Enable tracking");
 
     // Add the rest of the options
-    choices.push("Show apps usage", "Manage apps", "Help", "Exit");
+    choices.push(
+      "Show apps usage",
+      "Manage apps",
+      "Export data",
+      "Help",
+      "Exit"
+    );
 
     const answers = await inquirer.prompt([
       {
@@ -486,6 +654,10 @@ async function mainMenu() {
 
       case "Manage apps":
         await appsMenu();
+        break;
+
+      case "Export data":
+        await exportMenu();
         break;
 
       case "Help":

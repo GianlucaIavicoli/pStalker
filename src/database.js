@@ -68,7 +68,7 @@ export async function initializeDatabase() {
 }
 
 // Fetch app usage for a given period
-export async function fetchAppUsage(period, range = false) {
+export async function fetchAppUsage(period, range) {
   const db = await initializeDatabase();
   let startDate, endDate;
 
@@ -121,15 +121,8 @@ export async function fetchAppUsage(period, range = false) {
     endDate
   );
 
-  // Reshape and format the output
-  const result = rows.map((row) => ({
-    name: row.app_name,
-    excluded: row.excluded ? "Yes" : "No",
-    usage: formatDuration(row.total_seconds),
-  }));
-
   await db.close();
-  return result;
+  return rows;
 }
 
 // Function to add app usage data
