@@ -153,6 +153,12 @@ if [ -f "$AUTOSTART_SCRIPT_PATH" ]; then
     rm "$AUTOSTART_SCRIPT_PATH"
 fi
 
+# Check if the XDG_SESSION_TYPE is set to tty
+if [ "$XDG_SESSION_TYPE" = "tty" ]; then
+    echo -e "${RED}Error: XDG_SESSION_TYPE is set to tty. Unable to detect the desktop environment.${NC}"
+    cleanup_and_exit 1
+fi
+
 # Get the current desktop environment and convert it to lowercase
 CURRENT_DESKTOP=$(echo "$XDG_CURRENT_DESKTOP" | tr '[:upper:]' '[:lower:]')
 
