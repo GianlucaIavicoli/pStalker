@@ -1,10 +1,5 @@
 <a id="readme-top"></a>
 
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Forks][forks-shield]][forks-url]
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -170,12 +165,12 @@ pStalker CLI
 - [x] Enable selecting a specific day for generating reports
 - [x] Enable selecting a date range for generating reports
 - [x] Enable deleting all usage history for a specific app
-- [ ] Allow exporting data to a CSV file
-- [ ] Allow exporting data to a JSON file
+- [x] Allow exporting data to a CSV file
+- [x] Allow exporting data to a JSON file
+- [ ] Enable importing and exporting database backups
 - [ ] Add support for Windows
 - [ ] Add automated tests
 - [ ] Develop a GUI using Electron for viewing data on Linux and Windows
-- [ ] Enable importing and exporting database backups
 
 See the [open issues](https://github.com/GianlucaIavicoli/pStalker/issues) for a full list of proposed features and known issues.
 
@@ -226,11 +221,4 @@ Special thanks to the resources and tools that helped make this project possible
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[forks-shield]: https://img.shields.io/github/forks/GianlucaIavicoli/pStalker.svg?style=for-the-badge
-[forks-url]: https://github.com/GianlucaIavicoli/pStalker/network/members
-[stars-shield]: https://img.shields.io/github/stars/GianlucaIavicoli/pStalker.svg?style=for-the-badge
-[stars-url]: https://github.com/GianlucaIavicoli/pStalker/stargazers
-[issues-shield]: https://img.shields.io/github/issues/GianlucaIavicoli/pStalker.svg?style=for-the-badge
-[issues-url]: https://github.com/GianlucaIavicoli/pStalker/issues
 [product-screenshot]: images/screenshot.png

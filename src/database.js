@@ -68,7 +68,7 @@ export async function initializeDatabase() {
 }
 
 // Fetch app usage for a given period
-export async function fetchAppUsage(period, range = false) {
+export async function fetchAppUsage(period, range) {
   const db = await initializeDatabase();
   let startDate, endDate;
 
@@ -77,18 +77,31 @@ export async function fetchAppUsage(period, range = false) {
     // Handle specific day
     const [day, month, year] = period.split("/").map(Number);
     const specificDate = new Date(year, month - 1, day);
-    startDate = specificDate.toISOString().split("T")[0];
-    endDate = startDate; // For a specific day, startDate and endDate are the same
+
+    // Set start date to the beginning of the day (midnight)
+    startDate = new Date(specificDate.setHours(0, 0, 0, 0))
+      .toISOString()
+      .split("T")[0];
+
+    // Set end date to the end of the day (last moment)
+    endDate = new Date(specificDate.setHours(23, 59, 59, 999))
+      .toISOString()
+      .split("T")[0];
+
   } else if (range) {
+    // Handle date range
     const [startDay, startMonth, startYear] = period.startDate
       .split("/")
       .map(Number);
     const [endDay, endMonth, endYear] = period.endDate.split("/").map(Number);
 
-    startDate = new Date(startYear, startMonth - 1, startDay)
+    // Set startDate to the beginning of the start day
+    startDate = new Date(startYear, startMonth - 1, startDay, 0, 0, 0, 0)
       .toISOString()
       .split("T")[0];
-    endDate = new Date(endYear, endMonth - 1, endDay)
+
+    // Set endDate to the end of the end day
+    endDate = new Date(endYear, endMonth - 1, endDay, 23, 59, 59, 999)
       .toISOString()
       .split("T")[0];
   } else {
@@ -108,15 +121,8 @@ export async function fetchAppUsage(period, range = false) {
     endDate
   );
 
-  // Reshape and format the output
-  const result = rows.map((row) => ({
-    name: row.app_name,
-    excluded: row.excluded ? "Yes" : "No",
-    usage: formatDuration(row.total_seconds),
-  }));
-
   await db.close();
-  return result;
+  return rows;
 }
 
 // Function to add app usage data
