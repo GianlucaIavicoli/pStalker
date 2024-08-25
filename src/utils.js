@@ -128,14 +128,7 @@ export function exportData(format, results) {
   }
 
   // Generate file name based on current date and time
-  const date = new Date();
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-  const dateString = `${seconds}-${minutes}-${hours}-${day}-${month}-${year}`;
+  const dateString = getDateString();
 
   const fileName = `${LOWERCASE_APP_NAME}_${dateString}.${
     format === "csv" ? "csv" : "json"
@@ -181,6 +174,17 @@ export function exportData(format, results) {
 export async function sleepAndClear(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
   console.clear();
+}
+
+function getDateString() {
+  const date = new Date();
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${seconds}-${minutes}-${hours}-${day}-${month}-${year}`;
 }
 
 export async function getAppUsage(period, range = false, reshape = true) {
