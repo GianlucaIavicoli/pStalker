@@ -1,6 +1,8 @@
 # Changelog
 
 ## v1.2.4
+- Improved the logic to detect the desktop environment in use
+- Added the logic to ensure the XDG_SESSION_TYPE is not set to tty
 - Fixed the issue with the installation process that was causing the script to fail when checking if python3 is installed even if it was installed
 - Added the check for the 'pip3' command to be installed before installing the required packages
 - Revert the changes made in v1.2.3 and v1.2.2
