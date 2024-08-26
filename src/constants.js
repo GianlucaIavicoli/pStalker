@@ -66,6 +66,7 @@ ${chalk.bold('Main menu options:')}
  ${chalk.cyan('Show apps usage:')}    Display options to show the report of app usage.
  ${chalk.cyan('Manage apps:')}        Manage the list of apps to track.
  ${chalk.cyan('Export data:')}        Display options to export the data. Available formats: CSV, JSON.
+ ${chalk.cyan('Backup & Restore:')}   Display options to create and restore backups.
  ${chalk.cyan('Help:')}               Show this help menu.
  ${chalk.cyan('Exit:')}               Exit the tool.
 
