@@ -156,6 +156,12 @@ pStalker CLI
 │   │   └── Export to JSON
 │   │       └── Exports usage data to a JSON file.
 │   │ 
+│   ├── Backup & Restore
+│   │   ├── Create Backup
+│   │   │   └── Creates a backup of the current database.
+│   │   └── Restore from Backup
+│   │       └── Lists available backups and allows restoring from a selected backup file.
+│   │ 
 │   ├── Help
 │   │   └── Displays the help menu for the current section.
 │   └── Exit
@@ -173,10 +179,10 @@ pStalker CLI
 - [x] Enable deleting all usage history for a specific app
 - [x] Allow exporting data to a CSV file
 - [x] Allow exporting data to a JSON file
-- [ ] Enable importing and exporting database backups
+- [x] Enable importing and exporting database backups
 - [ ] Add support for Windows
 - [ ] Add automated tests
-- [ ] Develop a GUI using Electron for viewing data on Linux and Windows
+- [ ] Develop a GUI using Electron for viewing data on Linux and Windows. (Once the Repository reaches 100 stars)
 
 See the [open issues](https://github.com/GianlucaIavicoli/pStalker/issues) for a full list of proposed features and known issues.
 

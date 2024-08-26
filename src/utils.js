@@ -9,6 +9,9 @@ import {
   LINUX_UNINSTALL_PATH,
   LINUX_INSTALL_ARGS,
   ROOT_DIR,
+  EXPORT_PATH,
+  BACKUP_PATH,
+  DB_PATH,
 } from "./constants.js";
 import fs from "fs";
 import os from "os";
@@ -128,14 +131,7 @@ export function exportData(format, results) {
   }
 
   // Generate file name based on current date and time
-  const date = new Date();
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-  const dateString = `${seconds}-${minutes}-${hours}-${day}-${month}-${year}`;
+  const dateString = getDateString();
 
   const fileName = `${LOWERCASE_APP_NAME}_${dateString}.${
     format === "csv" ? "csv" : "json"
@@ -183,6 +179,17 @@ export async function sleepAndClear(ms) {
   console.clear();
 }
 
+function getDateString() {
+  const date = new Date();
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+}
+
 export async function getAppUsage(period, range = false, reshape = true) {
   const results = await fetchAppUsage(period, range);
 
@@ -198,18 +205,46 @@ export async function getAppUsage(period, range = false, reshape = true) {
   return results;
 }
 
-export function setuDirectory() {
-  const userHomeDir = os.homedir();
-  const appExportDir = path.join(userHomeDir, APP_NAME, "exports");
-  const appBackupDir = path.join(userHomeDir, APP_NAME, "backups");
 
+export function setuDirectory() {
   // Create export directory if it doesn't exist
-  if (!fs.existsSync(appExportDir)) {
-    fs.mkdirSync(appExportDir, { recursive: true });
+  if (!fs.existsSync(EXPORT_PATH)) {
+    fs.mkdirSync(EXPORT_PATH, { recursive: true });
   }
 
   // Create backup directory if it doesn't exist
-  if (!fs.existsSync(appBackupDir)) {
-    fs.mkdirSync(appBackupDir, { recursive: true });
+  if (!fs.existsSync(BACKUP_PATH)) {
+    fs.mkdirSync(BACKUP_PATH, { recursive: true });
+  }
+}
+
+export function createBackup() {
+  try {
+    const dateString = getDateString();
+
+    const backupFileName = `pStalker_backup_${dateString}.db`;
+    const backupFilePath = path.join(BACKUP_PATH, backupFileName);
+
+    fs.copyFileSync(DB_PATH, backupFilePath);
+    console.log(
+      chalk.green(`Backup created successfully at ${backupFilePath}`)
+    );
+  } catch (error) {
+    console.error(chalk.red("Error creating backup:", error));
+  }
+}
+
+
+export function restoreBackup(backupFile) {
+  try {
+    if (!fs.existsSync(backupFile)) {
+      console.error(chalk.red("Backup file not found."));
+      return;
+    }
+
+    fs.copyFileSync(backupFile, DB_PATH);
+    console.log(chalk.green("Backup restored successfully."));
+  } catch (error) {
+    console.error(chalk.red("Error restoring backup:", error));
   }
 }

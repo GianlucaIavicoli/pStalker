@@ -8,6 +8,8 @@ import {
   exportData,
   setuDirectory,
   getAppUsage,
+  createBackup,
+  restoreBackup,
 } from "../src/utils.js";
 import {
   DEFAULT_SLEEP_TIME,
@@ -16,6 +18,8 @@ import {
   APPS_MENU_HELP,
   SMALL_SEPARATOR,
   EXPORT_MENU_HELP,
+  BACKUPS_MENU_HELP,
+  BACKUP_PATH,
 } from "../src/constants.js";
 import {
   getApps,
@@ -25,6 +29,8 @@ import {
   getUsedApps,
 } from "../src/database.js";
 import { Table } from "console-table-printer";
+import fs from "fs";
+import path from "path";
 
 async function appsMenu() {
   var defaultTable = new Table({
@@ -348,7 +354,7 @@ async function appUsageMenu() {
 
         // Fetch the app usage data for the specific day
         results = await getAppUsage(formattedDate, false, true);
-        
+
         // Update and print the table
         defaultTable.table.title = `Apps usage report for: ${displayDate}`;
         defaultTable.addRows(results);
@@ -606,6 +612,103 @@ async function chooseExportPeriods(format) {
   await sleepAndClear(DEFAULT_SLEEP_TIME);
 }
 
+async function backupMenu() {
+  const backupOptions = [
+    "Create Backup",
+    "Restore from Backup",
+    "Help",
+    "Back",
+  ];
+
+  const answers = await inquirer.prompt([
+    {
+      type: "list",
+      name: "backupAction",
+      message: "Select an action:",
+      choices: backupOptions,
+      pageSize: 15,
+    },
+  ]);
+
+  switch (answers.backupAction) {
+    case "Create Backup":
+      createBackup();
+      await sleepAndClear(DEFAULT_SLEEP_TIME);
+
+      break;
+
+    case "Restore from Backup":
+      try {
+        // Get the list of all backup files in the backup directory
+        const backupFiles = fs
+          .readdirSync(BACKUP_PATH)
+          .filter((file) => file.endsWith(".db"));
+
+        if (backupFiles.length === 0) {
+          console.log(chalk.yellow("No backup files found."));
+          return;
+        }
+
+        // Create a list of backups with their creation dates
+        const backupChoices = backupFiles.map((file) => {
+          const filePath = path.join(BACKUP_PATH, file);
+          const fileStats = fs.statSync(filePath);
+          const creationDate = new Date(fileStats.birthtime).toLocaleString();
+          return `${file} - ${creationDate}`;
+        });
+
+        // Prompt the user to select a backup file
+        const { selectedBackup } = await inquirer.prompt([
+          {
+            type: "list",
+            name: "selectedBackup",
+            message: "Select a backup file to restore:",
+            choices: backupChoices,
+            pageSize: 15,
+          },
+        ]);
+
+        // Extract the filename from the selected choice
+        const selectedBackupFile = selectedBackup.split(" - ")[0];
+        const backupFilePath = path.join(BACKUP_PATH, selectedBackupFile);
+
+        // Confirm the restoration
+        const { confirmRestore } = await inquirer.prompt([
+          {
+            type: "confirm",
+            name: "confirmRestore",
+            message: `Are you sure you want to restore the backup '${selectedBackupFile}'? This will overwrite the current database and cannot be undone.`,
+            default: false,
+          },
+        ]);
+
+        // If confirmed, proceed with restoring the backup
+        if (confirmRestore) {
+          restoreBackup(backupFilePath);
+          await sleepAndClear(DEFAULT_SLEEP_TIME);
+        } else {
+          console.log(chalk.yellow("Restore operation canceled."));
+          await sleepAndClear(DEFAULT_SLEEP_TIME);
+        }
+      } catch (error) {
+        console.error(chalk.red("Error restoring backup:", error));
+      }
+      break;
+
+    case "Help":
+      console.clear();
+      console.log(BACKUPS_MENU_HELP);
+      break;
+
+    case "Back":
+      console.clear();
+      return;
+  }
+
+  // After completing an action, return to the main backup menu
+  await backupMenu();
+}
+
 async function mainMenu() {
   try {
     const trackingEnabled = await isTrackingEnabled();
@@ -621,6 +724,7 @@ async function mainMenu() {
       "Show apps usage",
       "Manage apps",
       "Export data",
+      "Backup & Restore",
       "Help",
       "Exit"
     );
@@ -658,6 +762,10 @@ async function mainMenu() {
 
       case "Export data":
         await exportMenu();
+        break;
+
+      case "Backup & Restore": // New case for backup and restore
+        await backupMenu();
         break;
 
       case "Help":

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.6
+- Added the ability to create timestamped backups and restore from a selected backup file, including safety prompts and improved directory management.
+
 ## 1.3.6
 - Added the options to export the usage history to a CSV or JSON file
 

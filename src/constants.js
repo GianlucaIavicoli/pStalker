@@ -1,11 +1,12 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import chalk from 'chalk';
+import os from 'os';
 
 // App
 export const APP_NAME = 'pStalker';
 export const APP_DESCRIPTION =`pStalker is a CLI-only time tracking tool that monitors the time spent on desktop applications.`;
-export const APP_VERSION = '1.3.6';
+export const APP_VERSION = '1.4.6';
 export const LOWERCASE_APP_NAME = APP_NAME.toLowerCase();
 
 
@@ -14,8 +15,11 @@ export const ROOT_DIR = path.resolve(
 	path.dirname(fileURLToPath(import.meta.url)),
 	'..'
 );
-export const DB_PATH = path.join(ROOT_DIR, 'data', 'tracker.db');
+export const DB_PATH = path.join(ROOT_DIR, 'data', 'pstalker.db');
 export const UPDATER_PATH = path.join(ROOT_DIR, 'src', 'updater.js');
+export const USER_HOME_PATH = os.homedir();
+export const EXPORT_PATH = path.join(USER_HOME_PATH, APP_NAME, 'exports');
+export const BACKUP_PATH = path.join(USER_HOME_PATH, APP_NAME, 'backups');
 
 
 // General Utils
@@ -62,6 +66,7 @@ ${chalk.bold('Main menu options:')}
  ${chalk.cyan('Show apps usage:')}    Display options to show the report of app usage.
  ${chalk.cyan('Manage apps:')}        Manage the list of apps to track.
  ${chalk.cyan('Export data:')}        Display options to export the data. Available formats: CSV, JSON.
+ ${chalk.cyan('Backup & Restore:')}   Display options to create and restore backups.
  ${chalk.cyan('Help:')}               Show this help menu.
  ${chalk.cyan('Exit:')}               Exit the tool.
 
@@ -106,6 +111,19 @@ ${chalk.bold('README:')} The data will be exported in the pStalker folder in you
 ${chalk.bold('Export data options:')}
  ${chalk.cyan('Export to CSV:')}    Export the data to a CSV file.
  ${chalk.cyan('Export to JSON:')}   Export the data to a JSON file.
+ ${chalk.cyan('Help:')}             Show this help menu.
+ ${chalk.cyan('Back')}              Go back to the main menu.
+
+Use the arrow keys to navigate the menu and press Enter to select an option.
+${SEPARATOR}`;
+
+
+export const BACKUPS_MENU_HELP = `${SEPARATOR}
+${chalk.bold('README:')} The backups will be saved in the pStalker folder in your home directory.\nTo restore a backup, you need to put the backup file in the backups folder.\nAfter creating a backup, you can rename it however you like, just leave the extension '.db' as it is
+
+${chalk.bold('Backups options:')}
+ ${chalk.cyan('Create backup:')}    Create a backup of the database.
+ ${chalk.cyan('Restore backup:')}   Restore a backup of the database. (Note: The current database will be overwritten)
  ${chalk.cyan('Help:')}             Show this help menu.
  ${chalk.cyan('Back')}              Go back to the main menu.
 
