@@ -182,7 +182,7 @@ pStalker CLI
 - [x] Enable importing and exporting database backups
 - [ ] Add support for Windows
 - [ ] Add automated tests
-- [ ] Develop a GUI using Electron for viewing data on Linux and Windows
+- [ ] Develop a GUI using Electron for viewing data on Linux and Windows. (Once the Repository reaches 100 stars)
 
 See the [open issues](https://github.com/GianlucaIavicoli/pStalker/issues) for a full list of proposed features and known issues.
 
